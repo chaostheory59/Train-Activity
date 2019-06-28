@@ -22,9 +22,9 @@ var config = {
 
   
   
-  function calcMinutesAway(tStart, tFreq) {
-    console.log(`${tFreq}, ${tStart}`)
-    return parseInt(tFreq) - parseInt(tStart) % parseInt(tFreq);
+  function calcMinutesAway(diffTime, tFreq) {
+    console.log(`${tFreq}, ${diffTime}`)
+    return tFreq - (diffTime % tFreq);
   }
   
   function calcNextArrival(tminutesAway) {
@@ -35,23 +35,25 @@ var config = {
 
 
   $("#add-train-btn").on("click", function(event) {
-    event.preventDefault();
-  
+    event.preventDefault();   
+    
     // Grabs user input
     var tName = $("#train-name-input").val().trim();
     var tDestination = $("#destination-input").val().trim();
-    var tStart = moment($("#start-input").val().trim(), "HH:mm").format("HH:mm");
+    var tStart = $("#start-input").val().trim();
     var tFreq = $("#frequency-input").val().trim();
-  
-    // Creates local "temporary" object for holding train data
     
-    // Uploads Train data to the database
-  
+    var firstTimeConverted = moment(tStart, "HH:mm");
     
- 
+
+    
+    
+
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    
   
 
-   var tminutesAway = calcMinutesAway(tStart, tFreq);
+   var tminutesAway = calcMinutesAway(diffTime, tFreq);
 		console.log("The next train will be here in: " + tminutesAway +" minutes.");
 
 		//Whenever current time matches next arrival time
@@ -108,14 +110,7 @@ database.ref().on("child_added", function(childSnapshot) {
     console.log(trainStart);
     console.log(trainFreq);
   
-    // Prettify the employee start
-    var trainStartP = moment.unix(trainStart).format("HH:mm");
-  
-    // Calculate the months worked using hardcore math
-    // To calculate the months worked
     
-  
-    // Calculate the total billed rate
     
   
     // Create the new row
